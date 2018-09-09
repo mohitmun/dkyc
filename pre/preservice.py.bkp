@@ -1,0 +1,76 @@
+import textwrap
+from math import floor, ceil
+from flask import Flask
+from PRE_Candidate import CA, Proxy, Client
+import base64
+def encrypt(msg, a):
+    msg = msg.encode()
+    a.init_chacha20()  # User A init chacha20,including generate random seed
+    seed_a = a.get_random_seed()
+    msg_chacha20 = a.get_encryption_chacha20(msg)  # User A encrypt it with seed_a using CHACHA20
+
+    seed_pre_enc_a = a.get_encrypted_seed()  # User A encrypt seed using PRE with A's public key
+
+    aes_enc_msg = \
+        proxy.aes_encrypt(msg_chacha20, seed_pre_enc_a, a)  # PROXY generate random AES key and encrypt CHACHA20 message
+    return base64.b64encode(seed_pre_enc_a)
+
+def decrypt_re_encrypted(pre_re_enc_aes_key_b, pre_re_enc_seed_b, b):
+
+    aes_key_b = b.get_decrypted_aes_key(pre_re_enc_aes_key_b)  # B re-decrypted pre_re_enc_aes_key, send back to Proxy
+
+    msg_chacha20_b = proxy.aes_decrypt(proxy.encrypted_data, aes_key_b)  # Proxy decrypted msg using AES and send back to B
+
+    pre_dec_seed_b = b.get_decrypted_seed(pre_re_enc_seed_b)  # B re-decrypted pre_re_enc_seed for plain seed
+    b.init_chacha20(pre_dec_seed_b)  # B initialize CHACHA20 by that seed
+    msg_b = b.get_encryption_chacha20(msg_chacha20_b)
+    # print_middle("Now B successfully received the correct data from A")
+    return msg_b.decode()
+
+
+def re_encrypt(seed_pre_enc_a, a, b):
+    rkey = ca.get_re_key(a, b)  # CA cacluate re-encryption key from A to B,send it to A
+    pre_re_enc_seed_b = proxy.pre_reencrypt(rkey, base64.b64decode(seed_pre_enc_a))  # Proxy calculate re-encrypted seed for B
+
+    pre_re_enc_aes_key_b = proxy.pre_reencrypt(rkey, proxy.pre_aes_key)  # Proxy calculate re-encrypted aes key for B
+    return {'key': pre_re_enc_aes_key_b, 'reed': pre_re_enc_seed_b}
+
+ca = CA()  # create CA
+param = ca.get_param()  # generate global parameter
+proxy = Proxy(param=param)  # create Proxy(Server) with parameter
+user_a = Client(param=param, proxy=proxy, ca=ca)  # create user A with global parameter and Proxy & CA
+user_b = Client(param=param, proxy=proxy, ca=ca)  # create user B with global parameter and Proxy & CA
+msg = "This is a demo"  # User A wants to send something to B
+encrypted_msg = encrypt(msg, user_a)
+data = re_encrypt(encrypted_msg, user_a, user_b)
+msg_b = decrypt_re_encrypted(data["key"], data["reed"], user_b)
+# assert msg == msg_a
+assert msg == msg_b
+users = {}
+app = Flask(__name__)
+import base64
+from flask import request
+@app.route("/new_user/<string:user_id>")
+def new_user(user_id):
+    print("new user created")
+    users[user_id] = Client(param=param, proxy=proxy, ca=ca)
+    return "New User created"
+
+@app.route("/encrypt")
+def encrypt_():
+    user_id = request.args.get('user_id')
+    if user_id in users:
+        print("user found")
+        user = users[user_id]
+        print("user_id:")
+        print(request.args.get('user_id'))
+        print("msg:")
+        print(request.args.get('msg'))
+        return encrypt(request.args.get('msg'), user).decode()
+    else:
+        return "No user found"
+
+
+# print(encrypt_())
+if __name__ == "__main__":
+    app.run()
