@@ -1,5 +1,7 @@
 ## DKYC - decentralized KYC
 
+![1](dkyc_nse_hack/dkyc_nse_hack.001.jpeg)
+
 ### what
 Concent based Decentralized KYC using Distributed ledger and with core focus on privacy
 
