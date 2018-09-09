@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <!--meta data-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!--title-->
+    <title>dkyc</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom Fonts. Need to be connected to internet for some fonts to work -->
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    <!-- Theme CSS -->
+    <link href="css/agency.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top" class="index">
+
+    <!-- JS source files -->
+    <script type="text/javascript" src="./dist/web3.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.web3 !== "undefined" && typeof window.web3.currentProvider !== "undefined") {
+            var web3 = new Web3(window.web3.currentProvider);
+        } else {
+            var web3 = new Web3();
+        }
+    </script>
+    <script language="JavaScript" type="text/javascript" src="./js/contractDetails.js"></script>
+    <script language="JavaScript" type="text/javascript" src="./index.js"></script>
+
+    <!-- Navigation bar-->
+    <nav id="mainNav" class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container">
+            <!-- For better display in small screen sizes -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
+                    </button>
+                <a class="navbar-brand page-scroll" href="#page-top">dkyc</a>
+            </div>
+
+            <!-- Different links for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                <!--for easier navigation in the page-->
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                    </li>
+                    <li>
+                    </li>
+                </ul>
+
+                <!--signup and login-->
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a data-toggle="modal" data-target="#signUp" id="sign_up"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                    <li><a data-toggle="modal" data-target="#logIn" id="log_in"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Tell Me More -->
+    <header>
+        <div class="container">
+            <div class="intro-text">
+                <div class="intro-heading">dkyc</div>
+            </div>
+        </div>
+    </header>
+
+
+
+    <!--Modal for signUp-->
+    <div id="signUp" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!--Modal Content-->
+            <div class="modal-content">
+
+                <!--Modal Header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                    <h3 align="center"> Register your Bank</h3>
+                </div>
+
+                <!--Modal Body-->
+                <div class="container">
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="control-group">
+                                    <!-- Name of Bank -->
+                                    <label class="control-label" for="username">Name of Bank</label>
+                                    <div class="controls">
+                                        <!--Take info from here and store it in the block-chain-->
+                                        <input type="text" id="username" name="username_1" placeholder="" class="input-xlarge">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="container">
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="control-group">
+                                    <!-- Name of Bank -->
+                                    <label class="control-label" for="username">Password</label>
+                                    <div class="controls">
+                                        <!--Take info from here and store it in the block-chain-->
+                                        <input type="text" id="password" name="password_s" placeholder="" class="input-xlarge">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="control-group">
+                                    <!-- Name of Bank -->
+                                    <label class="control-label" for="username">Registration No</label>
+                                    <div class="controls">
+                                        <!--Take info from here and store it in the block-chain-->
+                                        <input type="text" id="reg_no" name="reg_no" placeholder="" class="input-xlarge">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+
+                <!--Modal Footer-->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" id="sign_up" onclick="onSignUp()">Sign up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal for logIn-->
+    <div id="logIn" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!--Modal Content-->
+            <div class="modal-content">
+
+                <!--Modal Header-->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">X</button>
+                    <h3 align="center"> Log In </h3>
+                </div>
+
+                <!--Modal Body-->
+                <div class="container">
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="control-group">
+                                    <!-- Name of Bank -->
+                                    <label class="control-label" for="username">Name of Bank</label>
+                                    <div class="controls">
+                                        <!--Take info from here and store it in the block-chain-->
+                                        <input type="text" id="username_l" name="username_2" placeholder="" class="input-xlarge">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+
+
+                <div class="container">
+                    <div class="modal-body">
+                        <form class="form-horizontal">
+                            <fieldset>
+                                <div class="control-group">
+                                    <!-- Name of Bank -->
+                                    <label class="control-label" for="username">Password</label>
+                                    <div class="controls">
+                                        <!--Take info from here and store it in the block-chain-->
+                                        <input type="text" id="password_l" name="password_l" placeholder="" class="input-xlarge">
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+
+                <!--Modal Footer-->
+                <div class="modal-footer">
+                    <!--change the onclick so that it verifies account no from the blockchain-->
+                    <button type="submit" class="btn btn-primary" data-dismiss="modal" id="log_in" onclick="onLogin()">Log In</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js" integrity="sha384-mE6eXfrb8jxl0rzJDBRanYqgBxtJ6Unn4/1F7q4xRRyIw7Vdg9jP4ycT7x1iVsgb" crossorigin="anonymous"></script>
+
+
+    <!-- Theme JavaScript -->
+    <script src="js/agency.js"></script>
+
+</body>
+
+</html>
